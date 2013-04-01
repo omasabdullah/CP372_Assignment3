@@ -21,6 +21,5 @@ class TCPClient
 		modifiedSentence = inFromServer.readLine();
 		System.out.println("FROM SERVER: " + modifiedSentence);
 		clientSocket.close();
-		System.out.println("Test");
 	}
 }
