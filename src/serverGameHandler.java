@@ -1,0 +1,27 @@
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public class serverGameHandler extends Thread
+{
+    protected DatagramSocket socket = null;
+    int destinationPort;
+    Vector<String[]> receivedStrings = new Vector<String[]>();
+    InetAddress hostAddress;
+	
+	public serverGameHandler(Vector<String[]> myString) throws IOException
+	{
+		this("serverGameHandler");
+		System.out.println("GameHandler Running...");
+		receivedStrings = myString;
+	}
+	
+	public serverGameHandler(String name) throws IOException
+	{
+		super(name);
+	}
+	
+	public void run()
+    {
+    }
+}
