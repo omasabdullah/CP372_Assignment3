@@ -33,11 +33,12 @@ public class serverClientHandler extends Thread
             	Socket connectionSocket = welcomeSocket.accept();
             	
             	BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-    			DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
             	String clientInput = inFromClient.readLine();
             	String[] singleClientCommand = clientInput.split(" ");
             	
             	clientCommands.add(singleClientCommand);
+            	
+            	welcomeSocket.close();
             	
             	
             }

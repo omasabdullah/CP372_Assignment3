@@ -1,13 +1,9 @@
 import java.io.*;
-import java.net.*;
 import java.util.*;
 
 public class serverGameHandler extends Thread
 {
-    protected DatagramSocket socket = null;
-    int destinationPort;
     Vector<String[]> receivedStrings = new Vector<String[]>();
-    InetAddress hostAddress;
 	
 	public serverGameHandler(Vector<String[]> myString) throws IOException
 	{
@@ -23,5 +19,6 @@ public class serverGameHandler extends Thread
 	
 	public void run()
     {
+		
     }
 }
