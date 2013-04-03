@@ -2,24 +2,22 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class serverReceive extends Thread
+public class serverListener extends Thread
 {
     protected DatagramSocket socket = null;
     int destinationPort;
     Vector<String> receivedStrings = new Vector<String>();
     InetAddress hostAddress;
 	
-	public serverReceive(InetAddress myAddress, int receivePort, int sendPort, Vector<String> myString) throws IOException
+	public serverListener(int receivePort, Vector<String> myString) throws IOException
 	{
 		this("serverReceive");
 		System.out.println("Server up");
 		socket = new DatagramSocket(receivePort);
-		destinationPort = sendPort;
 		receivedStrings = myString;
-		hostAddress = myAddress;
 	}
 	
-	public serverReceive(String name) throws IOException
+	public serverListener(String name) throws IOException
 	{
 		super(name);
 	}

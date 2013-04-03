@@ -5,19 +5,17 @@ public class serverSide
 {
     public static void main(String[] args) throws Exception
     {
-		if (args.length != 3)
+		if (args.length != 1)
 		{
-            System.out.println("Wrong paramaters: Use Hostaddress, receive port, send port");
+            System.out.println("Wrong paramaters: Specify port number");
             return;
 		}
 		
-		InetAddress hostAddress = InetAddress.getByName(args[0]);
-		int receivePort = Integer.parseInt(args[1]);
-		int sendPort = Integer.parseInt(args[2]);
+		int receivePort = Integer.parseInt(args[0]);
     	
     	Vector<String> receivedPackets = new Vector<String>();
     	
-        serverReceive receiveThread = new serverReceive(hostAddress, receivePort, sendPort, receivedPackets);
+        serverListener receiveThread = new serverListener(receivePort, receivedPackets);
         
         receiveThread.start();
     }
