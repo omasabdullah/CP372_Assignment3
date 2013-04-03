@@ -5,7 +5,7 @@ public class serverSide
 {
     public static void main(String[] args) throws Exception
     {
-		if (args.length != 4)
+		if (args.length != 3)
 		{
             System.out.println("Wrong paramaters: Use Hostaddress, receive port, send port");
             return;
@@ -14,7 +14,6 @@ public class serverSide
 		InetAddress hostAddress = InetAddress.getByName(args[0]);
 		int receivePort = Integer.parseInt(args[1]);
 		int sendPort = Integer.parseInt(args[2]);
-		String fileName = args[3];
     	
     	Vector<String> receivedPackets = new Vector<String>();
     	

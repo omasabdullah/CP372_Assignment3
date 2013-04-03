@@ -10,7 +10,7 @@ public class clientSide
 	
 	public static void main(String[] args) throws Exception
     {	
-		if (args.length != 5)
+		if (args.length != 4)
 		{
             System.out.println("Wrong paramaters: Use Hostaddress, send port, receive port, filename");
             return;
@@ -20,7 +20,6 @@ public class clientSide
 		int destinationPort = Integer.parseInt(args[1]);
 		int receivePort = Integer.parseInt(args[2]);
 		String fileName = args[3];
-		int reliabilityNumber = Integer.parseInt(args[4]);
 		
 		File sendFile = new File(fileName);
 		
