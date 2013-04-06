@@ -30,11 +30,14 @@ public class serverClientHandler extends Thread
             {
             	ServerSocket welcomeSocket = new ServerSocket(receivePort);
             	Socket connectionSocket = welcomeSocket.accept();
+            	String ipAddress = connectionSocket.getRemoteSocketAddress().toString();
             	
             	BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
             	String clientInput = inFromClient.readLine();
+            	clientInput = ipAddress + clientInput;
             	String[] singleClientCommand = clientInput.split(" ");
             	clientCommands.add(singleClientCommand);
+            	welcomeSocket.close();
             }
             catch (IOException e)
             {
