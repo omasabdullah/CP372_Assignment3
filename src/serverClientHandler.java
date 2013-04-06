@@ -35,12 +35,7 @@ public class serverClientHandler extends Thread
             	BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
             	String clientInput = inFromClient.readLine();
             	String[] singleClientCommand = clientInput.split(" ");
-            	
             	clientCommands.add(singleClientCommand);
-            	
-            	welcomeSocket.close();
-            	
-            	
             }
             catch (IOException e)
             {
