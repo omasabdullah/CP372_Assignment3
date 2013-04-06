@@ -10,7 +10,7 @@ public class serverMain
             return;
 		}
 		
-		int receivePort = Integer.parseInt(args[0]);
+		int receivePort = 4598;//Integer.parseInt(args[0]);
     	
     	Vector<String[]> receivedStrings = new Vector<String[]>();
     	Vector<String[]> connectedPlayers = new Vector<String[]>();
