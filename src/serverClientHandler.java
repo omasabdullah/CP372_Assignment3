@@ -28,7 +28,6 @@ public class serverClientHandler extends Thread
         {
             try
             {
-            	
             	ServerSocket welcomeSocket = new ServerSocket(receivePort);
             	Socket connectionSocket = welcomeSocket.accept();
             	

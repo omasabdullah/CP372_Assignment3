@@ -13,9 +13,10 @@ public class serverMain
 		int receivePort = Integer.parseInt(args[0]);
     	
     	Vector<String[]> receivedStrings = new Vector<String[]>();
+    	Vector<String[]> connectedPlayers = new Vector<String[]>();
     	
         serverClientHandler clientHandler = new serverClientHandler(receivePort, receivedStrings);
-        serverGameHandler gameHandler = new serverGameHandler(receivedStrings);
+        serverGameHandler gameHandler = new serverGameHandler(receivedStrings, connectedPlayers);
         
         clientHandler.start();
         gameHandler.start();
