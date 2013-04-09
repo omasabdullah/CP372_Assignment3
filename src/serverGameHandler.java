@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Random;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.Socket;
@@ -21,8 +22,9 @@ public class serverGameHandler extends Thread
     Vector<String[]> receivedStrings = new Vector<String[]>();
     Vector<String[]> connectedPlayers = new Vector<String[]>();		//connectedPlayers setup as 0 - name, 1 - score.
     
-    String[] scrambledWords = new String[20];
-    String currentWord = new String();
+    String[] scrambledWords = {"amiz", "rowbn", "leham", "iahco", "reggin"};
+    String[] solvedWords = {"zima", "brown", "hamel", "chiao", "nigger"};
+    int currentWord;
     int gameState = NOT_STARTED;
 
 	public serverGameHandler(Vector<String[]> myString, Vector<String[]> myPlayers) throws IOException
@@ -49,7 +51,6 @@ public class serverGameHandler extends Thread
 			}
 			catch (IOException e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -58,12 +59,17 @@ public class serverGameHandler extends Thread
 				// Preparing game puzzle
 				case NOT_STARTED:
 				{
-	
+					if (connectedPlayers.size() > 1)
+						startGame();
 				} break;
 				// Game in Progress
 				case IN_PROGRESS:
 				{
-					
+					if (connectedPlayers.size() < 2)
+					{
+						try {endGame("");}
+						catch (IOException e) {e.printStackTrace();}
+					}
 				} break;
 			}
 		}
@@ -77,9 +83,9 @@ public class serverGameHandler extends Thread
 			
 			switch (Integer.parseInt(parseString[1]))
 			{
-				case CONNECT:	handlePlayer(parseString[1], parseString[2], false);		break;
+				case CONNECT:	handlePlayer(parseString[0], parseString[2], false);		break;
 				case COMMAND:	handleChat(parseString[2], parseString[3]);					break;
-				case QUIT:		handlePlayer(parseString[1], parseString[2], true);			break;
+				case QUIT:		handlePlayer(parseString[0], parseString[2], true);			break;
 			}
 			
 			receivedStrings.remove(0);
@@ -108,17 +114,15 @@ public class serverGameHandler extends Thread
 				System.out.println("Player: " + playerName + " not found.");
 		}
 		else
-		{
-			System.out.println("Adding following player to session: " + playerName);
+		{	
 			String[] newPlayer = {ipAddress, playerName, "0"};
 			connectedPlayers.add(newPlayer);
+			System.out.println("Adding following player to session: " + connectedPlayers.lastElement()[1]);
 		}
 	}
 	
 	public void endGame(String winningPlayer) throws IOException
-	{
-		gameState = NOT_STARTED;
-		
+	{		
 		for (int i = 0; i < connectedPlayers.size(); i++)
 		{
 			if (connectedPlayers.get(i)[1] == winningPlayer)
@@ -135,27 +139,32 @@ public class serverGameHandler extends Thread
 			}
 		}
 		
-		String sendString = WIN + " " + winningPlayer;
+		String sendString;
+		
+		if (winningPlayer == "")
+			sendString = WIN + " " + "NULL";
+		else
+			sendString = WIN + " " + winningPlayer;
 		
 		sendStringToAllClients(sendString);
+		
+		gameState = NOT_STARTED;
 	}
 	
 	public void startGame()
 	{
 		gameState = IN_PROGRESS;
+		Random randomGenerator = new Random();
+		currentWord = randomGenerator.nextInt(4);
 	}
 	
 	public void handleChat(String playerName, String chatString) throws IOException
 	{
 		
-		if (gameState == IN_PROGRESS && chatString.equals(currentWord))
+		if (gameState == IN_PROGRESS && chatString.equals(solvedWords[currentWord]))
 			endGame(playerName);
 		
 		String sendString = CHAT + " " + playerName + " " + chatString;
-		
-		System.out.println("Sending string to client:");
-		System.out.println(playerName);
-		System.out.println(chatString);
 		
 		sendStringToAllClients(sendString);
 	}
@@ -164,8 +173,9 @@ public class serverGameHandler extends Thread
 	{
 		for (int i = 0; i < connectedPlayers.size(); i++)
 		{
-			String clientIP = connectedPlayers.get(i)[0];
-			
+			String[] clientIPArray = connectedPlayers.get(i)[0].split(":");
+			String clientIP = clientIPArray[0];
+
 			SocketAddress clientSocket = new InetSocketAddress(clientIP,6001);
 			Socket mySocket = new Socket();
 			

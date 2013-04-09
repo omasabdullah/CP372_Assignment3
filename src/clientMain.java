@@ -60,8 +60,15 @@ class clientMain extends JFrame implements ActionListener
     					info(parseString[1] + ": " + parseString[2]);
     					break;
     				case WIN:
-    					info(parseString[1] + "HAS WON!");
-    					info("New Round Starting!");
+    					info("============================");
+    					if (parseString[1] == "NULL")
+    					{
+    						info("Not enough players, game is ending!");
+    						info("New Round Starting!");
+    					}
+    					else
+    						info(parseString[1] + " HAS WON!");
+    					info("============================");
     					break;
     			}
     			
