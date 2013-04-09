@@ -6,7 +6,6 @@ public class serverClientHandler extends Thread
 {
     int receivePort;
     Vector<String[]> clientCommands = new Vector<String[]>();
-    InetAddress hostAddress;
 	
 	public serverClientHandler(int receivePort, Vector<String[]> myString) throws IOException
 	{
