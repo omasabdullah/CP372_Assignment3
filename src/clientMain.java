@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.Timer;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.Socket;
@@ -10,6 +11,10 @@ import java.net.Socket;
 
 class clientMain extends JFrame implements ActionListener
 {
+	static final int UPDATE			= 3;
+	static final int CHAT			= 4;
+	static final int WIN			= 5;
+	
 	// Networking Variables
 	Vector<String[]> serverCommands = new Vector<String[]>();
 	clientReceiveThread receiveThread = new clientReceiveThread(serverCommands); 
@@ -29,13 +34,43 @@ class clientMain extends JFrame implements ActionListener
     public JTextArea info;
     public JTextField input;
     
+    Timer timer = new Timer();
+    boolean restart;
+    
 	public static void main(String argv[]) throws Exception
 	{	
 		new clientMain();
 	}
 	
+	class RemindTask extends TimerTask
+	{
+        public void run()
+        {
+        	timer.schedule(new RemindTask(), 500);
+            
+            while (serverCommands.isEmpty() == false)
+    		{
+    			String[] parseString = serverCommands.firstElement();
+    			
+    			switch (Integer.parseInt(parseString[0]))
+    			{
+    				case UPDATE:
+    					break;
+    				case CHAT:
+    					info(parseString[1] + ": " + parseString[2]);
+    					break;
+    				case WIN:
+    					break;
+    			}
+    			
+    			serverCommands.remove(0);
+    		}
+        }
+	}
+	
 	public clientMain() throws IOException
-	{		
+	{
+		timer.schedule(new RemindTask(), 500);
 		JFrame frame = new JFrame("Guess the Word!");
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(700, 450));

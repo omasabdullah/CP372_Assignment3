@@ -33,7 +33,7 @@ public class clientReceiveThread extends Thread
             	BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
             	String clientInput = inFromClient.readLine();
             	System.out.println("Received from server: " + clientInput);
-            	String singleServerCommand[] = clientInput.split(" ",2);
+            	String singleServerCommand[] = clientInput.split(" ",3);
             	serverCommands.add(singleServerCommand);
             	welcomeSocket.close();
             }
