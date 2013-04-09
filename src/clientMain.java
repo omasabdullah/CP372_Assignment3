@@ -64,10 +64,7 @@ class clientMain extends JFrame implements ActionListener
     					if (parseString[1].equals("NULL"))
     						info("Not enough players, game is ending!");
     					else
-    					{
     						info(parseString[1] + " HAS WON!");
-    						info("New Round Starting!");
-    					}
     					info("=========================================");
     					break;
     			}
@@ -157,13 +154,16 @@ class clientMain extends JFrame implements ActionListener
 		info("The scrambled word is: " + parseString[1]);
 		info("=========================================");
 		
+		System.out.println(parseString[2]);
 		String[] myUsers = parseString[2].split(" ");
-		String userList = "";
-		for (int i = 0; i < myUsers.length/2; i = i + 2)
+		String userList = "<html>";
+		for (int i = 0; i < myUsers.length; i = i + 2)
 		{
-			userList = userList + myUsers[i] + " " + myUsers[i+1] + "\n";
+			userList = userList + myUsers[i] + " " + myUsers[i+1] + "<br>";
 		}
+		userList = userList + "</html>";
 		
+		System.out.println(userList);
 		users.setText(userList);
 		word.setText(parseString[1]);
 	}
