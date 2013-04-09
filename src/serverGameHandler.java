@@ -125,20 +125,18 @@ public class serverGameHandler extends Thread
 	}
 	
 	public void endGame(String winningPlayer) throws IOException
-	{		
+	{
+		System.out.println("Game Over " + winningPlayer + " wins.");
+		
 		for (int i = 0; i < connectedPlayers.size(); i++)
 		{
-			if (connectedPlayers.get(i)[1] == winningPlayer)
+			if (connectedPlayers.get(i)[1].equals(winningPlayer))
 			{
 				System.out.println("Awarding following player a point: " + winningPlayer);
-				
-				String[] myPlayer = {connectedPlayers.get(i)[1], connectedPlayers.get(i)[2]}; 
-				int currentScore = Integer.parseInt(myPlayer[1]);
+
+				int currentScore = Integer.parseInt(connectedPlayers.get(i)[2]);
 				currentScore = currentScore + 1;
-				myPlayer[1] = Integer.toString(currentScore);
-				
-				connectedPlayers.remove(i);
-				connectedPlayers.add(myPlayer);
+				connectedPlayers.get(i)[2] = Integer.toString(currentScore);
 			}
 		}
 		
@@ -164,18 +162,17 @@ public class serverGameHandler extends Thread
 		
 		for (int i = 0; i < connectedPlayers.size(); i++)
 		{
-			sendString = sendString + connectedPlayers.get(i)[1] + connectedPlayers.get(i)[2];
+			sendString = sendString + " " + connectedPlayers.get(i)[1] + " " + connectedPlayers.get(i)[2];
 		}
 		
 		sendStringToAllClients(sendString);
 	}
 	
 	public void handleChat(String playerName, String chatString) throws IOException
-	{
-		
+	{	
 		if (gameState == IN_PROGRESS && chatString.equals(solvedWords[currentWord]))
 			endGame(playerName);
-		
+
 		String sendString = CHAT + " " + playerName + " " + chatString;
 		
 		sendStringToAllClients(sendString);
