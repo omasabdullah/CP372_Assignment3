@@ -41,28 +41,31 @@ public class serverGameHandler extends Thread
 	
 	public void run()
     {
-		try
+		while (true)
 		{
-			handleConnectionStrings();
-		}
-		catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		switch (gameState)
-		{
-			// Preparing game puzzle
-			case NOT_STARTED:
+			try
 			{
-
-			} break;
-			// Game in Progress
-			case IN_PROGRESS:
+				handleConnectionStrings();
+			}
+			catch (IOException e)
 			{
-				
-			} break;
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			switch (gameState)
+			{
+				// Preparing game puzzle
+				case NOT_STARTED:
+				{
+	
+				} break;
+				// Game in Progress
+				case IN_PROGRESS:
+				{
+					
+				} break;
+			}
 		}
     }
 	
@@ -74,9 +77,9 @@ public class serverGameHandler extends Thread
 			
 			switch (Integer.parseInt(parseString[1]))
 			{
-				case CONNECT:	handlePlayer(parseString[0], parseString[1], false);		break;
+				case CONNECT:	handlePlayer(parseString[1], parseString[2], false);		break;
 				case COMMAND:	handleChat(parseString[1], parseString[2]);					break;
-				case QUIT:		handlePlayer(parseString[0], parseString[1], true);			break;
+				case QUIT:		handlePlayer(parseString[1], parseString[2], true);			break;
 			}
 			
 			receivedStrings.remove(0);
@@ -92,7 +95,7 @@ public class serverGameHandler extends Thread
 			
 			for (int i = 0; i < connectedPlayers.size(); i++)
 			{
-				if (connectedPlayers.get(i)[1] == playerName)
+				if (connectedPlayers.get(i)[1].equals(playerName))
 				{
 					connectedPlayers.remove(i);
 					playerFound = true;
@@ -103,6 +106,7 @@ public class serverGameHandler extends Thread
 			
 			if (playerFound == false)
 				System.out.println("Player: " + playerName + " not found.");
+			else System.out.println("Player: " + playerName + " removed.");
 		}
 		else
 		{

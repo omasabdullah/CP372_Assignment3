@@ -4,13 +4,13 @@ public class serverMain
 {
     public static void main(String[] args) throws Exception
     {
-		if (args.length != 1)
+		/*if (args.length != 1)
 		{
             System.out.println("Wrong paramaters: Specify port number");
             return;
-		}
+		}*/
 		
-		int receivePort = 4598;//Integer.parseInt(args[0]);
+		int receivePort = 6000;//Integer.parseInt(args[0]);
     	
     	Vector<String[]> receivedStrings = new Vector<String[]>();
     	Vector<String[]> connectedPlayers = new Vector<String[]>();

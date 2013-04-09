@@ -6,8 +6,8 @@ public class clientReceiveThread extends Thread
 {
 	public clientReceiveThread() throws IOException
 	{
-		this("serverClientHandler");
-		System.out.println("ClientHandler Running...");
+		this("clientReceiveThread");
+		System.out.println("clientReceiveThread Running...");
 	}
 	
 	public clientReceiveThread(String name) throws IOException

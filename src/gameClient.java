@@ -4,19 +4,25 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+import java.net.Socket;
 
 
 class gameClient extends JFrame implements ActionListener
 {
-	Vector<String[]> clientCommands; 
-	clientReceiveThread t; 
+	// Networking Variables
+	Vector<String[]> serverConnections = new Vector<String[]>();
+	clientReceiveThread receiveThread = new clientReceiveThread(); 
+	boolean threadStarted = false;
 	
+	//GUI
+	public JTextField username;
     public JTextField ipInput;
     public JTextField portInput;
     public JButton connectButton;
     public JButton submit;
     public JLabel users;
-    public JTextField username;
     public JLabel word;
     
     public boolean connected = false;
@@ -24,77 +30,13 @@ class gameClient extends JFrame implements ActionListener
     public JTextArea info;
     public JTextField input;
     
-    public Socket clientSocket;
-    public PrintWriter out;
-    public Scanner in;
-    
 	public static void main(String argv[]) throws Exception
 	{	
 		new gameClient();	
 	}
 	
-	public void info(String s)
-	{
-		info.append(s + "\n");
-		pack();
-	}
-	 
-	public void connect(String ip, int port) throws IOException
-	{
-        String fromServer;
-        clientSocket = null;
-        out = null;
-        in = null;
-
-        try
-        {
-            //kkSocket = new Socket("192.219.237.39", 4444);
-            clientSocket = new Socket(ip, port);
-            /*out = new PrintWriter(clientSocket.getOutputStream(), true);
-            in = new Scanner(clientSocket.getInputStream());*/
-            
-            String sentence;
-    		String modifiedSentence;
-      
-    		BufferedReader inFromUser = new BufferedReader( new InputStreamReader(System.in));
-    		
-    		
-    		DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-    		
-    		BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-    		
-    		sentence = username.getText();
-    		//outToServer.writeBytes('0 ' + sentence);
-    		//modifiedSentence = inFromServer.readLine();
-    		//System.out.println("FROM SERVER: " + modifiedSentence);
-    		clientSocket.close();
-            
-            
-            
-            connectButton.setText("Disconnect");
-            connected = true;
-            input.setEditable(true);
-            
-            t.start();
-        }
-        catch (UnknownHostException ee)
-        {
-            //System.err.println("Don't know about host: taranis.");
-            info("Don't know about host: " + ip + ":" + port);
-            //System.exit(1);
-        }
-        catch (IOException ee)
-        {
-            info("Couldn't get I/O for the connection to: " + ip + ":" + port);
-           // System.exit(1);
-        }
-    }
-	
 	public gameClient() throws IOException
-	{
-		clientCommands = new Vector<String[]>();
-		t = new clientReceiveThread();
-		
+	{		
 		JFrame frame = new JFrame("Guess the Word!");
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(700, 450));
@@ -160,6 +102,51 @@ class gameClient extends JFrame implements ActionListener
         frame.pack();
         frame.setVisible(true);
 	}
+	
+	public void info(String s)
+	{
+		info.append(s + "\n");
+		pack();
+	}
+	 
+	public void connectionToServer(String ip, int port, boolean connect) throws IOException
+	{
+		if (threadStarted == false)
+		{
+			receiveThread.start();
+			threadStarted = true;
+		}
+
+		String connectString = new String();
+		
+		if (connect == true)
+		{
+			connectString = "0 " + username.getText();
+			connectButton.setText("Disconnect");
+	        connected = true;
+	        input.setEditable(true);
+		}
+		else
+		{
+			connectString = "2 " + username.getText();
+			connectButton.setText("Connect");
+	        connected = false;
+	        input.setEditable(false);
+		}
+		
+    	sendStringtoServer(connectString);
+    }
+	
+	public void sendStringtoServer(String sendString) throws IOException
+	{
+		SocketAddress clientSocket = new InetSocketAddress(ipInput.getText(),Integer.parseInt(portInput.getText()));
+    	Socket mySocket = new Socket();
+    	mySocket.connect(clientSocket);
+    	DataOutputStream outToClient = new DataOutputStream(mySocket.getOutputStream());
+    				
+    	outToClient.writeBytes(sendString);
+    	mySocket.close();
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
@@ -167,19 +154,15 @@ class gameClient extends JFrame implements ActionListener
 		if(e.getActionCommand().equals("Connect"))
 		{
 			info("Connecting to " + ipInput.getText() + ":" + portInput.getText());
-            try
-            {
-                connect(ipInput.getText(), Integer.parseInt(portInput.getText()));
-            }
-            catch (NumberFormatException e1)
-            {
-                info("Could not connect.");
-            }
-            catch (IOException e1)
-            {
-                info("Could not connect.");
-            }
+        	
+        	try {connectionToServer(ipInput.getText(), Integer.parseInt(portInput.getText()),true);}
+        	catch (NumberFormatException | IOException e1) {e1.printStackTrace();}
         }
+		else if(e.getActionCommand().equals("Disconnect"))
+		{
+        	try {connectionToServer(ipInput.getText(), Integer.parseInt(portInput.getText()),false);}
+        	catch (NumberFormatException | IOException e1) {e1.printStackTrace();}
+		}
 		else if(e.getActionCommand().equals("Send"))
 		{
 			String send = "1 " + username.getText() + " " + input.getText();

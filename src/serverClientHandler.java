@@ -30,10 +30,12 @@ public class serverClientHandler extends Thread
             	ServerSocket welcomeSocket = new ServerSocket(receivePort);
             	Socket connectionSocket = welcomeSocket.accept();
             	String ipAddress = connectionSocket.getRemoteSocketAddress().toString();
+            	ipAddress = ipAddress.substring(1);
             	
             	BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
             	String clientInput = inFromClient.readLine();
-            	clientInput = ipAddress + clientInput;
+            	clientInput = ipAddress + " " + clientInput;
+            	System.out.println("Received from client: " + clientInput);
             	String[] singleClientCommand = clientInput.split(" ");
             	clientCommands.add(singleClientCommand);
             	welcomeSocket.close();
