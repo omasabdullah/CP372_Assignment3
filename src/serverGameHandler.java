@@ -78,7 +78,7 @@ public class serverGameHandler extends Thread
 			switch (Integer.parseInt(parseString[1]))
 			{
 				case CONNECT:	handlePlayer(parseString[1], parseString[2], false);		break;
-				case COMMAND:	handleChat(parseString[1], parseString[2]);					break;
+				case COMMAND:	handleChat(parseString[2], parseString[3]);					break;
 				case QUIT:		handlePlayer(parseString[1], parseString[2], true);			break;
 			}
 			
@@ -135,7 +135,7 @@ public class serverGameHandler extends Thread
 			}
 		}
 		
-		String sendString = "5 " + winningPlayer;
+		String sendString = WIN + " " + winningPlayer;
 		
 		sendStringToAllClients(sendString);
 	}
@@ -148,11 +148,14 @@ public class serverGameHandler extends Thread
 	public void handleChat(String playerName, String chatString) throws IOException
 	{
 		
-		if (gameState == IN_PROGRESS)
-			if (chatString == currentWord)
-				endGame(playerName);
+		if (gameState == IN_PROGRESS && chatString.equals(currentWord))
+			endGame(playerName);
 		
-		String sendString = "4 " + playerName + " " + chatString;
+		String sendString = CHAT + " " + playerName + " " + chatString;
+		
+		System.out.println("Sending string to client:");
+		System.out.println(playerName);
+		System.out.println(chatString);
 		
 		sendStringToAllClients(sendString);
 	}
@@ -175,8 +178,3 @@ public class serverGameHandler extends Thread
 		}
 	}
 }
-
-
-
-
-
