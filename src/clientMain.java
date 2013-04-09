@@ -8,7 +8,6 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.Socket;
 
-
 class clientMain extends JFrame implements ActionListener
 {
 	static final int UPDATE			= 3;
@@ -55,6 +54,7 @@ class clientMain extends JFrame implements ActionListener
     			switch (Integer.parseInt(parseString[0]))
     			{
     				case UPDATE:
+    					handleNewRound(parseString);
     					break;
     				case CHAT:
     					info(parseString[1] + ": " + parseString[2]);
@@ -150,6 +150,11 @@ class clientMain extends JFrame implements ActionListener
 	{
 		info.append(s + "\n");
 		pack();
+	}
+	public void handleNewRound(String[] parseString)
+	{
+		for (int i = 0; i < parseString.length; i++)
+			System.out.println(parseString[i]);
 	}
 	 
 	public void connectionToServer(String ip, int port, boolean connect) throws IOException

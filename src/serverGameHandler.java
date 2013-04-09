@@ -60,7 +60,10 @@ public class serverGameHandler extends Thread
 				case NOT_STARTED:
 				{
 					if (connectedPlayers.size() > 1)
-						startGame();
+					{
+						try {startGame();}
+						catch (IOException e) {e.printStackTrace();}
+					}
 				} break;
 				// Game in Progress
 				case IN_PROGRESS:
@@ -151,11 +154,20 @@ public class serverGameHandler extends Thread
 		gameState = NOT_STARTED;
 	}
 	
-	public void startGame()
+	public void startGame() throws IOException
 	{
 		gameState = IN_PROGRESS;
 		Random randomGenerator = new Random();
-		currentWord = randomGenerator.nextInt(4);
+		currentWord = randomGenerator.nextInt(scrambledWords.length);
+		
+		String sendString = UPDATE + " " + scrambledWords[currentWord];
+		
+		for (int i = 0; i < connectedPlayers.size(); i++)
+		{
+			sendString = sendString + connectedPlayers.get(i)[1] + connectedPlayers.get(i)[2];
+		}
+		
+		sendStringToAllClients(sendString);
 	}
 	
 	public void handleChat(String playerName, String chatString) throws IOException
