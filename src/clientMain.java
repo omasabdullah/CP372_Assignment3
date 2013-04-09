@@ -8,7 +8,7 @@ import java.net.SocketAddress;
 import java.net.Socket;
 
 
-class gameClient extends JFrame implements ActionListener
+class clientMain extends JFrame implements ActionListener
 {
 	// Networking Variables
 	Vector<String[]> serverCommands = new Vector<String[]>();
@@ -31,10 +31,10 @@ class gameClient extends JFrame implements ActionListener
     
 	public static void main(String argv[]) throws Exception
 	{	
-		new gameClient();
+		new clientMain();
 	}
 	
-	public gameClient() throws IOException
+	public clientMain() throws IOException
 	{		
 		JFrame frame = new JFrame("Guess the Word!");
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
