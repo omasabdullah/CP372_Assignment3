@@ -170,12 +170,12 @@ public class serverGameHandler extends Thread
 	
 	public void handleChat(String playerName, String chatString) throws IOException
 	{	
-		if (gameState == IN_PROGRESS && chatString.equals(solvedWords[currentWord]))
-			endGame(playerName);
-
 		String sendString = CHAT + " " + playerName + " " + chatString;
 		
 		sendStringToAllClients(sendString);
+		
+		if (gameState == IN_PROGRESS && chatString.equals(solvedWords[currentWord]))
+			endGame(playerName);
 	}
 	
 	public void sendStringToAllClients(String sendString) throws IOException

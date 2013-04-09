@@ -60,15 +60,15 @@ class clientMain extends JFrame implements ActionListener
     					info(parseString[1] + ": " + parseString[2]);
     					break;
     				case WIN:
-    					info("============================");
-    					if (parseString[1] == "NULL")
+    					info("=========================================");
+    					if (parseString[1].equals("NULL"))
     						info("Not enough players, game is ending!");
     					else
     					{
     						info(parseString[1] + " HAS WON!");
     						info("New Round Starting!");
     					}
-    					info("============================");
+    					info("=========================================");
     					break;
     			}
     			
@@ -155,6 +155,7 @@ class clientMain extends JFrame implements ActionListener
 	{
 		info("NEW ROUND STARTING!");
 		info("The scrambled word is: " + parseString[1]);
+		info("=========================================");
 		
 		String[] myUsers = parseString[2].split(" ");
 		String userList = "";
