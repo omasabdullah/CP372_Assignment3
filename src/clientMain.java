@@ -62,12 +62,12 @@ class clientMain extends JFrame implements ActionListener
     				case WIN:
     					info("============================");
     					if (parseString[1] == "NULL")
-    					{
     						info("Not enough players, game is ending!");
+    					else
+    					{
+    						info(parseString[1] + " HAS WON!");
     						info("New Round Starting!");
     					}
-    					else
-    						info(parseString[1] + " HAS WON!");
     					info("============================");
     					break;
     			}
@@ -153,8 +153,18 @@ class clientMain extends JFrame implements ActionListener
 	}
 	public void handleNewRound(String[] parseString)
 	{
-		for (int i = 0; i < parseString.length; i++)
-			System.out.println(parseString[i]);
+		info("NEW ROUND STARTING!");
+		info("The scrambled word is: " + parseString[1]);
+		
+		String[] myUsers = parseString[2].split(" ");
+		String userList = "";
+		for (int i = 0; i < myUsers.length/2; i = i + 2)
+		{
+			userList = userList + myUsers[i] + " " + myUsers[i+1] + "\n";
+		}
+		
+		users.setText(userList);
+		word.setText(parseString[1]);
 	}
 	 
 	public void connectionToServer(String ip, int port, boolean connect) throws IOException
