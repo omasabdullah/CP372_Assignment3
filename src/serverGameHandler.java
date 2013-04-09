@@ -106,7 +106,6 @@ public class serverGameHandler extends Thread
 			
 			if (playerFound == false)
 				System.out.println("Player: " + playerName + " not found.");
-			else System.out.println("Player: " + playerName + " removed.");
 		}
 		else
 		{
@@ -164,7 +163,7 @@ public class serverGameHandler extends Thread
 		{
 			String clientIP = connectedPlayers.get(i)[0];
 			
-			SocketAddress clientSocket = new InetSocketAddress(clientIP,6000);
+			SocketAddress clientSocket = new InetSocketAddress(clientIP,6001);
 			Socket mySocket = new Socket();
 			
 			mySocket.connect(clientSocket);

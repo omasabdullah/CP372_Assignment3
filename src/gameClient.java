@@ -1,5 +1,4 @@
 import java.io.*;
-import java.net.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -12,8 +11,8 @@ import java.net.Socket;
 class gameClient extends JFrame implements ActionListener
 {
 	// Networking Variables
-	Vector<String[]> serverConnections = new Vector<String[]>();
-	clientReceiveThread receiveThread = new clientReceiveThread(); 
+	Vector<String[]> serverCommands = new Vector<String[]>();
+	clientReceiveThread receiveThread = new clientReceiveThread(serverCommands); 
 	boolean threadStarted = false;
 	
 	//GUI
@@ -32,7 +31,7 @@ class gameClient extends JFrame implements ActionListener
     
 	public static void main(String argv[]) throws Exception
 	{	
-		new gameClient();	
+		new gameClient();
 	}
 	
 	public gameClient() throws IOException
@@ -165,7 +164,9 @@ class gameClient extends JFrame implements ActionListener
 		}
 		else if(e.getActionCommand().equals("Send"))
 		{
-			String send = "1 " + username.getText() + " " + input.getText();
+			String sendString = "1 " + username.getText() + " " + input.getText();
+			try {sendStringtoServer(sendString);}
+			catch (IOException e1) {e1.printStackTrace();}
 		}
 	}
 }

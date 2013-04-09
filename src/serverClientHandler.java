@@ -36,7 +36,7 @@ public class serverClientHandler extends Thread
             	String clientInput = inFromClient.readLine();
             	clientInput = ipAddress + " " + clientInput;
             	System.out.println("Received from client: " + clientInput);
-            	String[] singleClientCommand = clientInput.split(" ");
+            	String singleClientCommand[] = clientInput.split(" ",4);
             	clientCommands.add(singleClientCommand);
             	welcomeSocket.close();
             }
