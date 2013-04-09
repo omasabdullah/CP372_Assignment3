@@ -8,7 +8,6 @@ import java.util.*;
 
 class gameClient extends JFrame implements ActionListener
 {
-	
 	Vector<String[]> clientCommands; 
 	clientReceiveThread t; 
 	
@@ -30,26 +29,25 @@ class gameClient extends JFrame implements ActionListener
     public Scanner in;
     
 	public static void main(String argv[]) throws Exception
-	{
-		
-		new gameClient();
-		
-		
-		
+	{	
+		new gameClient();	
 	}
 	
-	 public void info(String s) {
-	        info.append(s + "\n");
-		        pack();
-	   }
+	public void info(String s)
+	{
+		info.append(s + "\n");
+		pack();
+	}
 	 
-	public void connect(String ip, int port) throws IOException {
+	public void connect(String ip, int port) throws IOException
+	{
         String fromServer;
         clientSocket = null;
         out = null;
         in = null;
 
-        try {
+        try
+        {
             //kkSocket = new Socket("192.219.237.39", 4444);
             clientSocket = new Socket(ip, port);
             /*out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -66,7 +64,7 @@ class gameClient extends JFrame implements ActionListener
     		BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
     		
     		sentence = username.getText();
-    		outToServer.writeBytes('0 ' + sentence);
+    		//outToServer.writeBytes('0 ' + sentence);
     		//modifiedSentence = inFromServer.readLine();
     		//System.out.println("FROM SERVER: " + modifiedSentence);
     		clientSocket.close();
@@ -78,20 +76,22 @@ class gameClient extends JFrame implements ActionListener
             input.setEditable(true);
             
             t.start();
-            
-         
-        } catch (UnknownHostException ee) {
+        }
+        catch (UnknownHostException ee)
+        {
             //System.err.println("Don't know about host: taranis.");
             info("Don't know about host: " + ip + ":" + port);
             //System.exit(1);
-        } catch (IOException ee) {
+        }
+        catch (IOException ee)
+        {
             info("Couldn't get I/O for the connection to: " + ip + ":" + port);
            // System.exit(1);
         }
     }
 	
-	public gameClient() throws IOException {
-		
+	public gameClient() throws IOException
+	{
 		clientCommands = new Vector<String[]>();
 		t = new clientReceiveThread();
 		
@@ -102,7 +102,6 @@ class gameClient extends JFrame implements ActionListener
         Container content = frame.getContentPane();
         content.setBackground(Color.white);
         content.setLayout(new BorderLayout());
-        
         
         JPanel connectBar = new JPanel(new FlowLayout());
         
@@ -137,7 +136,6 @@ class gameClient extends JFrame implements ActionListener
         inputBar.add(submit);
         content.add(inputBar, BorderLayout.PAGE_END);
         
-        
         JLabel unLabel = new  JLabel("Username:");
         username = new JTextField(11);
         username.setPreferredSize(new Dimension(250,30));
@@ -151,7 +149,6 @@ class gameClient extends JFrame implements ActionListener
         portInput = new JTextField(4);
         portInput.setPreferredSize(new Dimension(75, 30));
         
-        
         connectBar.add(unLabel);
         connectBar.add(username);
         connectBar.add(ipLabel);
@@ -160,25 +157,31 @@ class gameClient extends JFrame implements ActionListener
         connectBar.add(portInput);
         connectBar.add(connectButton);
         
-        
         frame.pack();
         frame.setVisible(true);
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		 if(e.getActionCommand().equals("Connect")) {
-            info("Connecting to " + ipInput.getText() + ":" + portInput.getText());
-            try {
+	public void actionPerformed(ActionEvent e)
+	{
+		if(e.getActionCommand().equals("Connect"))
+		{
+			info("Connecting to " + ipInput.getText() + ":" + portInput.getText());
+            try
+            {
                 connect(ipInput.getText(), Integer.parseInt(portInput.getText()));
-            } catch (NumberFormatException e1) {
-                info("Could not connect.");
-            } catch (IOException e1) {
+            }
+            catch (NumberFormatException e1)
+            {
                 info("Could not connect.");
             }
-            
+            catch (IOException e1)
+            {
+                info("Could not connect.");
+            }
         }
-		else if(e.getActionCommand().equals("Send")) {
+		else if(e.getActionCommand().equals("Send"))
+		{
 			String send = "1 " + username.getText() + " " + input.getText();
 		}
 	}
