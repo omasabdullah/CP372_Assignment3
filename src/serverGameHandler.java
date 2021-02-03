@@ -23,7 +23,7 @@ public class serverGameHandler extends Thread
     Vector<String[]> connectedPlayers = new Vector<String[]>();		//connectedPlayers setup as 0 - name, 1 - score.
     
     String[] scrambledWords = {"amiz", "rowbn", "leham", "iahco", "reggin"};
-    String[] solvedWords = {"zima", "brown", "hamel", "chiao", "nigger"};
+    String[] solvedWords = {"zima", "brown", "hamel", "chiao", "ginger"};
     int currentWord;
     int gameState = NOT_STARTED;
 
